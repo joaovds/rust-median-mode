@@ -1,4 +1,4 @@
-use std::io;
+use std::{collections::HashMap, io};
 
 fn main() {
     println!("Enter the integers one after the other:");
@@ -21,12 +21,19 @@ fn main() {
         })
         .collect();
 
+    if input_numbers.len() == 0 {
+        return println!("No data input!...");
+    }
+
     input_numbers.sort();
 
-    let median = find_the_median(&input_numbers);
-
-    println!("{:?}", input_numbers);
-    println!("{:?}", median);
+    println!("------ ..... ------");
+    println!("Numbers: {:?}", input_numbers);
+    println!("Median: {}", find_the_median(&input_numbers));
+    match find_mode(&input_numbers) {
+        Some(n) => println!("Mode: {n}"),
+        None => println!("Mode: no exists!"),
+    };
 }
 
 fn find_the_median(numbers: &Vec<u32>) -> u32 {
@@ -40,4 +47,26 @@ fn find_the_median(numbers: &Vec<u32>) -> u32 {
     }
 
     return numbers[center_index];
+}
+
+fn find_mode(numbers: &Vec<u32>) -> Option<u32> {
+    let mut frequency = HashMap::new();
+
+    for &n in numbers {
+        *frequency.entry(n).or_insert(0) += 1;
+    }
+
+    let mut mode = None;
+    let mut greater_frequency = 0;
+
+    for (n, &freq) in &frequency {
+        if freq > greater_frequency {
+            mode = Some(*n);
+            greater_frequency = freq;
+        } else if freq == greater_frequency {
+            mode = None
+        }
+    }
+
+    mode
 }
