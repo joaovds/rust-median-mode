@@ -9,7 +9,7 @@ fn main() {
         .read_line(&mut input_numbers)
         .expect("Failed to read line!");
 
-    let input_numbers: Vec<u32> = input_numbers
+    let mut input_numbers: Vec<u32> = input_numbers
         .trim()
         .split_whitespace()
         .filter_map(|number| match number.trim().parse() {
@@ -20,6 +20,8 @@ fn main() {
             }
         })
         .collect();
+
+    input_numbers.sort();
 
     println!("{:?}", input_numbers)
 }
